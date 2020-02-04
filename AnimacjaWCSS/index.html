@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Animacja w transition i wstep do jquery</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  
 </head>
 <body>
     
     <div class="circle">    </div>
     <button>Zakręć</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script>
+    <script onload="">
         $('button').on('click',function(){
             $('.circle').toggleClass('active');
             console.log('jest ok');
