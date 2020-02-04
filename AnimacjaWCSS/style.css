@@ -1,0 +1,31 @@
+body{
+    background-color: rgba(12, 12, 12, 0.952);
+}
+
+.circle{
+    width: 40vh;
+    height: 40vh;
+    background-color: aqua;
+    border-radius: 50%;
+    border-top: 120px solid blue;
+    border-bottom: 120px solid red;
+    border-left: 120px solid yellow;
+    border-right: 120px solid green;
+    margin: 0 auto;
+    transition: all 5000ms ease;
+}
+
+.active{
+    transform: rotate(400deg);
+    background-color: black;
+}
+
+button{
+    background-color: brown;
+    color: white;
+    width: 200px;
+    height: 30px;
+    display: block;
+    margin: 20px auto;
+    border: none;
+}
