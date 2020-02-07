@@ -7,14 +7,16 @@ body{
     height: 200px;
     background-color: darkgrey;
     position: relative;
-    
+    perspective: 1000px;
   }
   
   .cube{
     width:100%;
     height: 100%;
     position:absolute;
-    background-color: red;
+    background-color: transparent;
+    transform-style: preserve-3d;
+    transition: 1s transform linear;
   }
 
   .cube > div {
@@ -23,5 +25,41 @@ body{
       border: 20px solid black;
       box-sizing: border-box;
       position: absolute;
+      background-color: lightblue;
 
   }
+
+  .cube .front{
+    transform: rotateX(0deg) translateZ(100px);
+    border-color: darkgreen;
+  }
+
+  .cube .back{
+    border-color: darkmagenta;
+    transform: rotateX(180deg) translateZ(100px);
+  }
+
+  .cube .right{
+    border-color: darkturquoise;
+    transform: rotateY(90deg) translateZ(100px);
+  }
+
+  .cube .left{
+    border-color: darkred;
+    transform: rotateY(-90deg) translateZ(100px);
+  }
+
+  .cube .top{
+    border-color: darkorange;
+    transform: rotateX(90deg) translateZ(100px);
+  }
+
+  .cube .bottom{
+    border-color: darksalmon;
+    transform: rotateX(-90deg) translateZ(100px);
+  }
+
+  .cube.show-left{
+    transform: rotateY(90deg);
+  }
+
