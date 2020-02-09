@@ -14,18 +14,22 @@ function start() {
     }
 }
 
-function attributionOnMauseOver() {
+function serAttributionOnMauseOver() {
     for (i = 0; i < 81; i++) {
-        event.push(document.getElementById("block" + i))
-
-
+        event.push(document.getElementById('block' + i));
     }
-    console.log(event)
 
+    event.forEach(function (item) {
+        item.addEventListener('click', function () {
+            var x = parseInt(this.innerText);
+            this.innerText = x + 1;
+        })
+    });
 }
+
 
 
 window.onload = function () {
     start();
-    attributionOnMauseOver()
+    serAttributionOnMauseOver()
 };
