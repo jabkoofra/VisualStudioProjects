@@ -1,0 +1,32 @@
+body {
+    background-color: grey;
+}
+
+.container {
+    width: 540px;
+    height: auto;
+    text-align: center;
+    background-color: transparent;
+    background-color: darkgrey;
+    margin: 20px auto;
+
+}
+
+.block {
+    float: left;
+    width: 56px;
+    height: 56px;
+    background-color: darkkhaki;
+    border: 2px solid darkslategray;
+    margin: 2px;
+    box-sizing: border-box;
+    
+}
+
+.block:hover {
+    background-color: rgba(196, 187, 62, 0.808);
+    border: 4px solid rgb(59, 124, 124);
+    margin: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
