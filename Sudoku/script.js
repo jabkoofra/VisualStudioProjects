@@ -1,6 +1,6 @@
 var container = document.querySelector(".container");
 var event = [];
-var lastPoint = 0;
+var currentIndex = -1;
 
 
 
@@ -54,36 +54,85 @@ function setMouseAttr() {
 
     event.forEach(function (item) {
         item.addEventListener('mouseover', function () {
-            var x = parseInt(this.innerText);
-            paintRow(x);
-            paintCol(x);
-            lastPoint = x;
-
+            currentIndex = parseInt(this.innerText);
+            paintAll(true);
         });
     });
     event.forEach(function (item) {
         item.addEventListener('mouseout', function () {
-            var x = parseInt(this.innerText);;
-            paintRow(lastPoint);
-            paintCol(lastPoint);
-
+            paintAll(false);
         });
     });
 }
 
-function paintRow(idx) {
-    var j = idx - idx % 9;
-    for (var i = j; i <= j + 8; i++) {
-        var x = document.getElementById('block' + i);
-        x.classList.toggle('block-click');
+function getRow() {
+    var temp = []
+    var j = currentIndex - currentIndex % 9;
+    for (var i = 0; i < 9; i++) {
+        temp.push(j + i);
     }
+    return temp;
 }
 
-function paintCol(idx) {
-    for (var i = 0; i < 9; i++) {
-        var x = document.getElementById('block' + (idx + i * 9) % 81);
+
+function paintRow() {
+    var temp = getRow(currentIndex);
+    temp.forEach(function (idxRow) {
+        var x = document.getElementById('block' + idxRow);
         x.classList.toggle('block-click');
+    });
+}
+
+function getCol() {
+    var temp = []
+    for (var i = 0; i < 9; i++) {
+        temp.push((currentIndex + i * 9) % 81);
     }
+    return temp;
+}
+
+function paintCol() {
+    var temp = getCol(currentIndex);
+    temp.forEach(function (idxCol) {
+        var x = document.getElementById('block' + idxCol);
+        x.classList.toggle('block-click');
+    });
+    return temp;
+}
+
+function getBloc() {
+    var col = getCol();
+    var row = getRow();
+    var tmp = [];
+
+    var i = currentIndex - currentIndex % 3;
+    var j = currentIndex - currentIndex % 27 + currentIndex % 9 - currentIndex % 3;
+
+    for (k = 0; k < 3; k++) {
+        for (l = 0; l < 3; l++) {
+            tmp.push(j + k * 9 + l);
+        }
+    }
+    return tmp;
+}
+
+function getAllElements() {
+    var tmp = [];
+    tmp = tmp.concat(getRow(), getCol(), getBloc());
+    return tmp
+}
+
+function paintAll(isPainting) {
+    var tmp = getAllElements();
+
+    tmp.forEach(function (idx) {
+        var x = document.getElementById('block' + idx);
+        if (isPainting) {
+            x.classList.add('block-click');
+        } else {
+            x.classList.remove('block-click');
+        }
+    });
 }
 
 
