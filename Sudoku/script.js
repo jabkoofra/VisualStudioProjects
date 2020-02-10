@@ -1,6 +1,10 @@
 var container = document.querySelector(".container");
+var board = document.querySelector(".board")
+var numeric = document.querySelector(".numeric");
+var help = document.querySelector(".help");
 var event = [];
 var currentIndex = -1;
+var selectedField = -1;
 
 
 
@@ -8,14 +12,25 @@ var currentIndex = -1;
 function start() {
 
     for (i = 0; i < 81; i++) {
-        if ((i + 1) % 3 == 0) {
-            var blok = '<div class="block" id="block' + i + '">' + i + ' </div>';
-        } else {
-            var blok = '<div class="block" id="block' + i + '">' + i + ' </div>';
-        }
-        container.innerHTML += blok;
+        var blok = '<div class="block" id="block' + i + '">' + i + ' </div>';
+        board.innerHTML += blok;
         if ((i + 1) % 9 == 0) {
-            container.innerHTML += '<div style="clear:both;"></div>';
+            board.innerHTML += '<div style="clear:both;"></div>';
+        }
+    }
+
+    for (i = 0; i < 9; i++) {
+        var blok = '<div class="num" id="numID' + i + '">' + i + ' </div>';
+        numeric.innerHTML += blok;
+        if ((i + 1) % 3 == 0) {
+            numeric.innerHTML += '<div style="clear:both;"></div>';
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        var blok = '<div class="helpButt" id="helpID' + i + '">' + i + ' </div>';
+        help.innerHTML += blok;
+        if ((i + 1) % 2 == 0) {
+            help.innerHTML += '<div style="clear:both;"></div>';
         }
     }
 
@@ -61,6 +76,18 @@ function setMouseAttr() {
     event.forEach(function (item) {
         item.addEventListener('mouseout', function () {
             paintAll(false);
+        });
+    });
+
+    event.forEach(function (item) {
+        item.addEventListener('click', function () {
+            if (selectedField >= 0) {
+                selectedField = -1
+            } else {
+                selectedField = parseInt(this.innerText)
+                console.log(selectedField);
+                
+            }
         });
     });
 }
