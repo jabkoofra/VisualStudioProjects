@@ -6,6 +6,8 @@ var event = [];
 var currentIndex = -1;
 var selectedField = -1;
 
+var helpEvent = [];
+
 
 
 
@@ -26,13 +28,14 @@ function start() {
             numeric.innerHTML += '<div style="clear:both;"></div>';
         }
     }
-    for (i = 0; i < 4; i++) {
-        var blok = '<div class="helpButt" id="helpID' + i + '">' + i + ' </div>';
-        help.innerHTML += blok;
-        if ((i + 1) % 2 == 0) {
-            help.innerHTML += '<div style="clear:both;"></div>';
-        }
-    }
+    /*  for (i = 0; i < 4; i++) {
+          var blok = '<div class="helpButt" id="helpID' + i + '">' + i + ' </div>';
+          help.innerHTML += blok;
+          if ((i + 1) % 2 == 0) {
+              help.innerHTML += '<div style="clear:both;"></div>';
+          }
+      }
+      */
 
     for (i = 2; i < 80; i = i + 3) {
         if ((i + 1) % 9 != 0) {
@@ -86,10 +89,24 @@ function setMouseAttr() {
             } else {
                 selectedField = parseInt(this.innerText)
                 console.log(selectedField);
+            }
+        });
+    });
+
+    for (var i = 0; i < 9; i++) {
+        helpEvent.push(document.getElementById('numID' + i));
+    }
+    helpEvent.forEach(function (item){
+        item.addEventListener('click',function(){
+            if (selectedField>-1){
+                document.getElementById('block'+selectedField).innerText = this.innerText;
+                selectedField = -1;
+            }else{
                 
             }
         });
     });
+
 }
 
 function getRow() {
@@ -100,7 +117,6 @@ function getRow() {
     }
     return temp;
 }
-
 
 function paintRow() {
     var temp = getRow(currentIndex);

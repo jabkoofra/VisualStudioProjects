@@ -1,0 +1,45 @@
+.hamburger{
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-top: 5px solid black;
+    background: transparent;
+    position: relative;
+    transition: 1s transform linear;
+}
+
+.hamburger::before{
+    content: '';
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    border-top: 5px solid black;
+    transform: translateY(12px);
+
+}
+
+.hamburger::after{
+    content: '';
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    border-top: 5px solid black;
+    transform: translateY(30px);
+    transition: 1s transform linear;
+}
+
+
+.hamburger:focus{
+    transform: rotate(405deg);
+    border-top: 5px solid transparent;
+    border: none;
+    outline: 0 !important;
+   /* transform: translateX(13px); */
+
+}
+
+.hamburger:focus::after{
+    transform: rotate(90deg)  translateX(13px); 
+}
