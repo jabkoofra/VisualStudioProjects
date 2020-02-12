@@ -7,7 +7,7 @@ var currentIndex = -1;
 var selectedField = -1;
 
 var helpEvent = [];
-
+var movesQueue = [];
 
 
 
@@ -22,7 +22,7 @@ function start() {
     }
 
     for (i = 0; i < 9; i++) {
-        var blok = '<div class="num" id="numID' + i + '">' + i + ' </div>';
+        var blok = '<div class="num" id="numID' + i + '">' + (i + 1) + ' </div>';
         numeric.innerHTML += blok;
         if ((i + 1) % 3 == 0) {
             numeric.innerHTML += '<div style="clear:both;"></div>';
@@ -72,7 +72,7 @@ function setMouseAttr() {
 
     event.forEach(function (item) {
         item.addEventListener('mouseover', function () {
-            currentIndex = parseInt(this.innerText);
+            currentIndex = parseInt(this.id.slice(5));
             paintAll(true);
         });
     });
@@ -84,10 +84,16 @@ function setMouseAttr() {
 
     event.forEach(function (item) {
         item.addEventListener('click', function () {
-            if (selectedField >= 0) {
+            if (selectedField != -1)
+                document.getElementById('block' + selectedField).classList.remove('block-click');
+
+            var val = parseInt(this.id.slice(5));
+            if (selectedField == val) {
                 selectedField = -1
+                console.log(selectedField);
             } else {
-                selectedField = parseInt(this.innerText)
+                selectedField = val;
+                document.getElementById('block' + selectedField).classList.add('block-click');
                 console.log(selectedField);
             }
         });
@@ -96,17 +102,62 @@ function setMouseAttr() {
     for (var i = 0; i < 9; i++) {
         helpEvent.push(document.getElementById('numID' + i));
     }
-    helpEvent.forEach(function (item){
-        item.addEventListener('click',function(){
-            if (selectedField>-1){
-                document.getElementById('block'+selectedField).innerText = this.innerText;
-                selectedField = -1;
-            }else{
-                
+    helpEvent.forEach(function (item) {
+        item.addEventListener('click', function () {
+            if (selectedField > -1) {
+                var id = 'block' + selectedField;
+                var currentValue = document.getElementById(id);
+                var nextValue = this.innerText;
+                var place = {
+                    blockID: id,
+                    currentValue: currentValue.innerText,
+                    nextValue: nextValue
+                };
+                movesQueue.push(place);
+                if (currentValue.innerText == nextValue) {
+                    currentValue.innerText = '';
+                } else {
+                    currentValue.classList.remove('block-notepad');
+                    currentValue.innerText = nextValue;
+                }
             }
         });
     });
 
+    helpEvent.push(document.getElementById('helpIDback'));
+    helpEvent[helpEvent.length - 1].addEventListener('click', function () {
+        if (movesQueue.length > 0) {
+            var lastMove = movesQueue[movesQueue.length - 1];
+            var back = document.getElementById(lastMove.blockID);
+            back.innerText = lastMove.currentValue;
+            movesQueue.pop();
+        }
+    });
+
+    helpEvent.push(document.getElementById('helpIDerrase'));
+    helpEvent[helpEvent.length - 1].addEventListener('click', function () {
+        if (selectedField > -1) {
+            document.getElementById('block' + selectedField).innerText = '';
+        }
+    });
+
+    helpEvent.push(document.getElementById('helpIDnotepad'));
+    helpEvent[helpEvent.length - 1].addEventListener('click', function () {
+        if (selectedField > -1) {
+            var tmp = document.getElementById('block' + selectedField);
+            tmp.innerText = '';
+            var create = tmp.classList.toggle('block-notepad');
+            if (create) {
+                for (i = 0; i < 9; i++) {
+                    var blok = '<div class="notepad" id="notepadID' + i + '">' + (i + 1) + ' </div>';
+                    tmp.innerHTML += blok;
+                    if ((i + 1) % 3 == 0) {
+                        tmp.innerHTML += '<div style="clear:both;"></div>';
+                    }
+                }
+            }
+        }
+    });
 }
 
 function getRow() {
@@ -171,9 +222,9 @@ function paintAll(isPainting) {
     tmp.forEach(function (idx) {
         var x = document.getElementById('block' + idx);
         if (isPainting) {
-            x.classList.add('block-click');
+            x.classList.add('block-hover');
         } else {
-            x.classList.remove('block-click');
+            x.classList.remove('block-hover');
         }
     });
 }
