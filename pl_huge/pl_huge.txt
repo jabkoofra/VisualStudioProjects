@@ -1,0 +1,4 @@
+This is a Polish language dictionary for WinEdt
+It is based on aspell dictionary word list:  http://www.kurnik.pl/slownik/
+Compiled by Michal Joachimczak <guhru (at) gabri.pl>, June 2005 
+Contains over 3 million words, coded with Windows CP 1250
