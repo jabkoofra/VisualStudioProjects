@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon</title>
+    <link href="https://fonts.googleapis.com/css?family=Sacramento&display=swap&subset=latin-ext" rel="stylesheet">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100vh;
+            background-color: black;
+            display: flex;
+        }
+
+        button {
+            position: absolute;
+            margin-top: 3%;
+            margin-left: 2%;
+        }
+
+        ul {
+            margin: auto;
+        }
+
+        li {
+            color: lightgreen;
+            display: inline-flex;
+            font-family: 'Sacramento', cursive;
+            font-weight: bold;
+            font-size: 30px;
+            text-shadow: 0 0 40px green, 0 0 30px rgb(202, 20, 20);
+            letter-spacing: 0px;
+        }
+
+        li:nth-child(12) {
+            transform: rotate(20deg) translateY(6px);
+            animation: neon 2s infinite linear;
+
+        }
+
+
+
+        
+    @keyframes neon {
+      0% {
+        opacity: 0;
+      }
+      5% {
+        opacity: 1;
+      }
+      20% {
+        opacity: 1;
+      }
+      25% {
+        opacity: 0.5;
+      }
+      30% {
+        opacity: 0.5
+      }
+      32% {
+        opacity: 1;
+      }
+      45% {
+        opacity: 1;
+      }
+      46% {
+        opacity: 0.5;
+      }
+      54% {
+        opacity: 0.5;
+      }
+      55% {
+        opacity: 1;
+      }
+      77% {
+        opacity: 1;
+      }
+      78% {
+        opacity: 0;
+      }
+      88% {
+        opacity: 0;
+      }
+      90% {
+        opacity: 1
+      }
+      93% {
+        opacity: 1
+      }
+      95% {
+        opacity: 0
+      }
+      97% {
+        opacity: 0
+      }
+      98% {
+        opacity: 1
+      }
+      100% {
+        opacity: 0;
+      }
+    </style>
+</head>
+
+<body>
+    <button>Włącz</button>
+    <ul>
+        <li>P</li>
+        <li>R</li>
+        <li>Z</li>
+        <li>E</li>
+        <li>M</li>
+        <li>Y</li>
+        <li>S</li>
+        <li>Ł</li>
+        <li>A</li>
+        <li>W</li>
+        <li></li>
+        <li>J</li>
+        <li>A</li>
+        <li>B</li>
+        <li>Ł</li>
+        <li>O</li>
+        <li>Ń</li>
+        <li>S</li>
+        <li>K</li>
+        <li>I</li>
+    </ul>
+
+</body>
+
+</html>
