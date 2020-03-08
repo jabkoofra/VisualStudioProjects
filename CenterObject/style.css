@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(90deg, gray 50%, darkgray 0);
+    background-size: 30px 100%;
+}
+
+h1 {
+    position: absolute;
+    top: 20px;
+    font-size: 44px;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    text-shadow: 1px 1px 3px gray, 0 0 16px black;
+}
+
+section {
+    width: 60vw;
+    background: white;
+    margin: 12% auto 15%;
+    border: 2px solid black;
+    box-shadow: 0 0 11px 4px black;
+}
+
+h3 {
+    font-weight: bold;
+    height: 20vh;
+    font-size: 28px;
+    text-align: center;
+    line-height: 20vh;
+    text-transform: uppercase;
+}
+
+
+p {
+    font-size: 14px;
+    color: white;
+}
+
+section div {
+    background-color: black;
+    height: 60vh;
+}
+
+@media (max-width:1300px) {
+    h3 {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 28px
+    }
+}
+
+@media (max-width:900px) {
+    h3 {
+        font-size: 14px;
+    }
+
+    h1 {
+        display: none;
+    }
+
+    img {
+        width: 150px;
+        height: auto;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width:600px) {
+    img {
+        width: 80px;
+        height: auto;
+    }
+
+    p {
+        font-size: 10px;
+    }
+
+    h3 {
+        font-size: 12px;
+    }
+}
+
+
+/*---------- WYŚRODKOWANIE ELEMENTU ---------*/
+
+
+/* 1 - element linowy w poziomie*/
+/* Rodzicowi dajemy text-align */
+
+#s1 div {
+    text-align: center;
+}
+
+/* 2 - element blokowy w poziomie*/
+/* margin auto - bardzo częsty sposób na 
+wyśrodkowanie całej strony*/
+
+#s2 div img {
+    display: block;
+    margin: 0 auto;
+    
+    /*obrazek jest 
+       auto więc trzeba oczywiście zmienić na blokowy */
+}
+
+/* od razu blokowy - tak pcentruje się często strony */
+#s2a div div {
+    margin: 0 auto;
+    width: 60%;
+    height: 80%;
+    background-color: deepskyblue;
+}
+
+/* 3 - wyśrodkowanie - tekst */
+
+#s3 div p {
+    text-align: center;
+    /* w poziomie*/
+    line-height: 60vh;
+    /*w pionie*/
+}
+
+
+/* 4 - sztuczka - wyśrodkowanie inline block*/
+
+#s4 div {
+    text-align: center;
+}
+
+#s4 div:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#s4 div img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/* 5 - wyśrdokowanie position absolute i margines minusowy **/
+
+#s5 div {
+    position: relative;
+}
+
+#s5 img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -64px;
+    margin-top: -64px;
+}
+
+
+/* 6 - wyśrdokowanie position absolute i calc **/
+
+#s6 div {
+    position: relative;
+}
+
+#s6 img {
+    position: absolute;
+    top: calc(50% - 128px/2);
+    left: calc(50% - 128px/2);
+}
+
+
+/* 7 - translate i absolute */
+/*najlepsze bo gdy rozmiar się zmieni to 
+mamy uniwersalny zapis */
+
+#s7 div {
+    position: relative;
+}
+
+#s7 img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+
+/* 8 - FLEX */
+/*najszybszy sposób  */
+
+#s8 div {
+  
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  
+}
+
+
+/* 9 - Flex dla konkretnego elementu*/
+
+#s9 div {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+#s9 img {
+    /*-webkit-align-self: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+    /*w filmie jak powyżej*/
+    margin: auto; /*wystarczy tak*/
+}
