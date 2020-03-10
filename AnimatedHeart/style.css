@@ -1,0 +1,99 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+@keyframes triangleAnim {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+@keyframes triangleEarsLeft {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(90deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+
+    }
+}
+
+@keyframes triangleEarsRight {
+    0% {
+        opacity: 0; 
+        transform: translateX(-100px) scale(0) rotate(-180deg);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateX(-100px) scale(1) rotate(-180deg);;
+    }
+
+    50% {
+        transform: rotate(-180deg);
+    }
+
+    100% {}
+}
+
+
+
+
+.heart {
+    margin-top: 70%;
+    margin-left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 400px;
+    height: 400px;
+    background-color: teal;
+    background-color: transparent;
+
+    border-color: red transparent;
+    border-style: solid;
+    border-width: 200px 200px 0px 200px;
+    border-radius: 1px;
+    position: relative;
+    animation: triangleAnim 3s 0.5s ease-in-out both;
+
+}
+
+.heart::after,
+.heart::before {
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    border-color: red;
+    border-style: solid;
+    border-width: 100px 0px 0px 0px;
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    z-index: -1;
+
+
+}
+
+.heart::after {
+    margin-left: -200px;
+    margin-top: -300px;
+    animation: triangleEarsLeft 5s 0.5s ease-in-out both;
+
+}
+
+.heart::before {
+    margin-right: 200px;
+    margin-top: -300px;
+    animation: triangleEarsRight 5s 0.5s ease-in-out both;
+
+}
