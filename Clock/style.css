@@ -1,0 +1,253 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --border: 2px;
+    --border-x2: calc(var(--border)*2);
+    --width-seg: calc(var(--border)*10);
+    --height-seg: calc(var(--width-seg)*2 + var(--border-x2)*3);
+    --width-half: calc(var(--width-seg)/2 + var(--border));
+    --width-half-times-dwo: calc(var(--width-half)*2 + 2px);
+    --width-half-times-three: calc(var(--width-half)*3 + 4px);
+    --width-half-times-four: calc(var(--width-half)*4 + 6px);
+
+}
+
+body {
+    background-color: darkgrey;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    /* wysrodkowanie  div.seg*/
+
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    /* 2rodzaj wysrodkowania */
+}
+
+#segment {
+    /* height: 340px;
+    width: 140px; */
+    height: var(--height-seg);
+    width: var(--width-seg);
+    /* background-color: khaki; */
+    margin: 10px;
+    /* wysrodkowanie div.seg */
+
+    /* position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%); */
+    /* 3 rodzaj wysrodkowania */
+    position: relative;
+}
+
+span {
+    display: block;
+    height: var(--border-x2);
+    width: var(--width-seg);
+    background-color: tomato;
+
+    position: absolute;
+    transition: transform .5s linear;
+}
+
+#segment span::before,
+#segment span::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    width: var(--border-x2);
+    height: var(--border-x2);
+    border: var(--border) solid transparent;
+
+}
+
+#segment span::before {
+    left: calc(var(--border)*-2);
+    border-right: var(--border) solid tomato;
+}
+
+#segment span::after {
+    right: calc(var(--border)*-2);
+    border-left: var(--border) solid tomato;
+}
+
+/* .seg span.vertical{
+    transform: rotate(90deg)  translate(60px,60px); 
+} */
+
+/* div.seg span:nth-child(1) */
+/* 
+ one two three four five six seven eight nine zero
+ 
+ .one span.seg1
+ .two span.seg1
+ .three span.seg1
+ .four span.seg1
+ .five span.seg1
+ .six span.seg1
+ .seven span.seg1
+ .eight span.seg1
+ .nine span.seg1
+ .zero span.seg1
+
+ */
+
+
+.seg1,
+.two span.seg1,
+.three span.seg1,
+.three span.seg7,
+.five span.seg1,
+.five span.seg2,
+.six span.seg1,
+.six span.seg2,
+.seven span.seg1,
+.seven span.seg7,
+.eight span.seg1,
+.nine span.seg1,
+.zero span.seg1 {
+    transform: translate(0, -2px);
+    /* top: -2px; 
+    left: 0; */
+}
+
+.seg2,
+.one span.seg1,
+.one span.seg2,
+.one span.seg3,
+.one span.seg5,
+.two span.seg2,
+.three span.seg2,
+.four span.seg2,
+.four span.seg1,
+.seven span.seg2,
+.seven span.seg3,
+.eight span.seg2,
+.nine span.seg2,
+.zero span.seg2 {
+    transform: translate(var(--width-half), var(--width-half)) rotate(90deg);
+
+    /* top: 0;
+    left: 120px; */
+}
+
+.seg3,
+.two span.seg3,
+.two span.seg4,
+.three span.seg3,
+.three span.seg3,
+.four span.seg5,
+.five span.seg6,
+.eight span.seg3,
+.nine span.seg3 {
+    transform: translate(0, var(--width-half-times-dwo)) rotate(360deg);
+    /* top: 122px;
+    left:  0; */
+
+}
+
+.seg4,
+.one span.seg4,
+.one span.seg6,
+.one span.seg7,
+.three span.seg4,
+.three span.seg6,
+.seven span.seg5,
+.seven span.seg6,
+.eight span.seg4,
+.nine span.seg4,
+.nine span.seg6,
+.zero span.seg3,
+.zero span.seg4 {
+    transform: translate(var(--width-half), var(--width-half-times-three)) rotate(90deg);
+
+    /* top: 124px;
+    left:  120px; */
+}
+
+.seg5,
+.two span.seg5,
+.three span.seg5,
+.eight span.seg5,
+.nine span.seg5,
+.zero span.seg5 {
+    transform: translate(0, var(--width-half-times-four)) rotate(-360deg);
+    /*  bottom: -6px;
+    left:  0; */
+}
+
+.seg6,
+.two span.seg6,
+.two span.seg7,
+.six span.seg6,
+.eight span.seg6,
+.zero span.seg6 {
+    transform: translate(calc(var(--width-half)*-1), var(--width-half-times-three)) rotate(-90deg);
+
+    /* bottom: 116px; */
+    /* top: 124px;
+    left: 0; */
+}
+
+
+.seg7,
+.four span.seg7,
+.four span.seg6,
+.eight span.seg7,
+.nine span.seg7,
+.zero span.seg7 {
+    transform: translate(calc(var(--width-half)*-1), var(--width-half)) rotate(-90deg);
+
+    /* top: 0px;
+    left: 0px; */
+}
+
+.one-to-two {
+    animation: otot 2s linear .1;
+}
+
+div#clock {
+    display: flex;
+    position: absolute;
+}
+
+.dot {
+    position: relative;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    margin: auto;
+    transition: opacity .5s linear;
+    opacity: 1;
+}
+
+.dot::before,
+.dot::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    left: 4px;
+}
+
+.dot::before {
+    top: -5px;
+}
+
+.dot::after {
+    top: 15px;
+}
+
+
+.notshow {
+    opacity: 0;
+}
