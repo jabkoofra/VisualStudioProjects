@@ -1,6 +1,3 @@
-console.log("a");
-
-
 var date = new Date();
 var hours = 0;
 var min = 0;
@@ -17,29 +14,31 @@ getTimeFun = () => {
     hours = date.getHours();
     min = date.getMinutes();
     sec = date.getSeconds();
-    setTimeFun();
 }
 
 setTimeFun = function () {
-    var x = clock[0].classList;
-    let lHours = hours / 10;
+    getTimeFun();
     let num = [
-         Math.floor(hours / 10),
-     hours % 10,
+        Math.floor(hours / 10),
+        hours % 10,
         Math.floor(min / 10),
-       min % 10,
-       Math.floor(sec / 10),
-         sec % 10
+        min % 10,
+        Math.floor(sec / 10),
+        sec % 10
     ];
 
-    console.log(num);
+    // console.log(num);
     for (let i = 0; i < num.length; i++) {
         const x = num[i];
-        for (let index = 0; index < nameNumber.length; index++) {
-            const element = nameNumber[index];
-            clock[i].classList.remove(element);
+        const className = clock[i].classList.value;
+
+        // str.substr(0,str.indexOf(' ')); // "72"
+        // str.substr(str.indexOf(' ')+1); // "tocirah sneab"
+
+        if (className != nameNumber[x]) {
+            clock[i].classList.remove(className);
+            clock[i].classList.add(nameNumber[x]);
         }
-        clock[i].classList.add(nameNumber[x]);
     }
     dot[0].classList.toggle('notshow');
     dot[1].classList.toggle('notshow');
@@ -47,8 +46,10 @@ setTimeFun = function () {
 }
 
 load = () => {
+
     setInterval(() => {
-        getTimeFun();
+
+        setTimeFun();
         // console.log(hours + ' : ' + min + ' : ' + sec);
     }, 1000);
 

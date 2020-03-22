@@ -1,0 +1,76 @@
+<html>
+<head>
+</head>
+<body>
+
+<div id="myDiv"><h2>Let AJAX change this text</h2></div>
+<button type="button" onclick="loadXMLDoc()">Change Content</button>
+
+
+
+
+<script type="text/javascript">
+
+    // function loadXMLDoc()
+    // {
+    // var xmlhttp;
+    // if (window.XMLHttpRequest)
+    //   {// code for IE7+, Firefox, Chrome, Opera, Safari
+    //   xmlhttp=new XMLHttpRequest();
+    //   }
+    // else
+    //   {// code for IE6, IE5
+    //   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    //   }
+    // xmlhttp.onreadystatechange=function()
+    //   {
+    //   if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    //     {
+    //     document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    //     }
+    //   }
+    // xmlhttp.open("GET","ajax_info.txt",true);
+    // xmlhttp.send();
+    // }
+    
+    var your_url = 'www.pl.wikipedia.org/wiki/Licznik';
+    your_url = 'ajax_info.txt'
+    // $.ajax({ url: your_url, success: function(data) { alert(data); } });
+    // This data is your HTML.
+    // Without jQuery (just JS):
+    
+    // function makeHttpObject() {
+    //   try {return new XMLHttpRequest();}
+    //   catch (error) {}
+    //   try {return new ActiveXObject("Msxml2.XMLHTTP");}
+    //   catch (error) {}
+    //   try {return new ActiveXObject("Microsoft.XMLHTTP");}
+    //   catch (error) {}
+    
+    //   throw new Error("Could not create HTTP request object.");
+    // }
+    // var request = makeHttpObject();
+    // request.open("GET", your_url, true);
+    // request.send(null);
+    // request.onreadystatechange = function() {
+    //   if (request.readyState == 4)
+    //     alert(request.responseText);
+    // };
+    
+    
+    function strip(html)
+    {
+       var tmp = document.createElement("DIV");
+       tmp.innerHTML = html;
+       return tmp.textContent||tmp.innerText;
+    }
+    
+    window.onload = alert(strip(document.body.innerHTML));
+
+    
+    </script>
+
+
+
+</body>
+</html>
