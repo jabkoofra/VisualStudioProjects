@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel</title>
+    <script type="text/javascript" src="xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+
+<body>
+    <input type="file" id="fileUpload" accept=".xls,.xlsx"> <br /><br />
+    <button type="button" id="uplaodExcel">Convert</button>
+    <pre id="jsonData"></pre>
+
+    <!--  load image with size -->
+    <!-- <form method="post" enctype="multipart/form-data">
+        <div>
+            <label for="image_uploads">Choose images to upload (PNG, JPG)</label>
+            <input type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
+        </div>
+        <div class="preview">
+            <p>No files currently selected for upload</p>
+        </div>
+        <div>
+            <button>Submit</button>
+        </div>
+    </form> -->
+    <!--  -->
+
+    <!-- <textarea id="textbox">Type something here</textarea> <button id="create">Create file</button> 
+    <a download="info.txt" id="downloadlink" style="display: none">Download</a>   -->
+
+
+    <script>
+        var selectedFile;
+        var dataFromExcel = [];
+
+        // // load image with size
+        // const input = document.querySelector('input#image_uploads');
+        // const preview = document.querySelector('.preview');
+
+        var myObj;
+
+        document
+            .getElementById('fileUpload')
+            .addEventListener('change', function (event) {
+                selectedFile = event.target.files[0];
+            });
+
+
+
+        // load image with size
+        // input.addEventListener('change', updateImageDisplay);
+        // function updateImageDisplay() {
+        //     while (preview.firstChild) {
+        //         preview.removeChild(preview.firstChild);
+        //     }
+
+        //     const curFiles = input.files;
+        //     console.log(curFiles);
+
+        //     if (curFiles.length === 0) {
+        //         const para = document.createElement('p');
+        //         para.textContent = 'No files currently selected for upload';
+        //         preview.appendChild(para);
+        //     } else {
+        //         const list = document.createElement('ol');
+        //         preview.appendChild(list);
+
+        //         for (const file of curFiles) {
+        //             const listItem = document.createElement('li');
+        //             const para = document.createElement('p');
+        //             if (validFileType(file)) {
+        //                 para.textContent = `File name ${file.name}, file size ${returnFileSize(file.size)}.`;
+        //                 const image = document.createElement('img');
+        //                 image.src = URL.createObjectURL(file);
+
+        //                 listItem.appendChild(image);
+        //                 listItem.appendChild(para);
+        //             } else {
+        //                 para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
+        //                 listItem.appendChild(para);
+        //             }
+        //             list.appendChild(listItem);
+        //         }
+        //     }
+        // }
+
+
+        // const fileTypes = [
+        //     'image/jpeg',
+        //     'image/pjpeg',
+        //     'image/png'
+        // ];
+
+        // function validFileType(file) {
+        //     return fileTypes.includes(file.type);
+        // }
+
+        // function returnFileSize(number) {
+        //     if (number < 1024) {
+        //         return number + 'bytes';
+        //     } else if (number >= 1024 && number < 1048576) {
+        //         return (number / 1024).toFixed(1) + 'KB';
+        //     } else if (number >= 1048576) {
+        //         return (number / 1048576).toFixed(1) + 'MB';
+        //     }
+        // }
+        // 
+
+        document
+            .getElementById('uplaodExcel')
+            .addEventListener('click', excelToJson);
+
+        function excelToJson() {
+            if (selectedFile) {
+                console.log('hi');
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    var data = event.target.result;
+                    var workbook = XLSX.read(data, {
+                        type: 'binary'
+                    });
+                    workbook.SheetNames.forEach(sheet => {
+                        let rowObject = XLSX.utils.sheet_to_row_object_array(
+                            workbook.Sheets[sheet]
+                        );
+
+                        let jsonObject = JSON.stringify(rowObject);
+                        document.getElementById('jsonData').innerHTML += jsonObject + '<br />';
+                        // console.log('1 ' + jsonObject);
+                        myObj = JSON.parse(jsonObject);
+                        dataFromExcel = myObj;
+
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                // console.log(this.responseText);
+                                // var myObj = JSON.parse(jsonObject);
+                                // document.getElementById("demo").innerHTML = myObj.name;
+                            }
+                        };
+                        xmlhttp.open("GET", "json_demo.txt", true);
+                        xmlhttp.send();
+
+
+                        // var form_data = new FormData();
+                        // for (var key in jsonObject) {
+                        //     form_data.append(key, jsonObject[key]);
+                        // }
+                        // var request = new XMLHttpRequest();
+                        // request.open("POST", "http://127.0.0.1:5500/Excel/test.txt");
+                        // request.send(form_data);
+
+                    });
+                };
+                fileReader.readAsBinaryString(selectedFile);
+            }
+        }
+
+
+
+        // (function () {
+        //     var textFile = null,
+        //         makeTextFile = function (text) {
+        //             var data = new Blob([text], {
+        //                 type: 'text/plain'
+        //             });
+
+        //             // If we are replacing a previously generated file we need to  
+        //             // manually revoke the object URL to avoid memory leaks.  
+        //             if (textFile !== null) {
+        //                 window.URL.revokeObjectURL(textFile);
+        //             }
+        //             textFile = window.URL.createObjectURL(data);
+        //             return textFile;
+        //         };
+
+
+        //     var create = document.getElementById('create'),
+        //         textbox = document.getElementById('textbox');
+        //     create.addEventListener('click', function () {
+        //         var link = document.getElementById('downloadlink');
+        //         link.href = makeTextFile(textbox.value);
+        //         link.style.display = 'block';
+        //     }, false);
+        // })();
+    </script>
+</body>
+
+</html>

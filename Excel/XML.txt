@@ -1,0 +1,250 @@
+XMLHttpRequest
+ Ostatnia aktualizacja: 01 lutego 2020
+Obiekt XMLHttpRequest istnieje w Javascript nierozerwalnie od momentu powstania Ajax i s³u¿y do nawi¹zywania dynamicznych po³¹czeñ XHR.
+
+W dzisiejszych czasach mamy dla niego nowszy zamiennik w postaci Fetch i prawdopodobnie to jego bêdziesz g³ównie u¿ywa³, ale ¿e miêdzy obydwoma bohaterami s¹ pewne ró¿nice a i na starszych przegl¹darkach Fetch nie bêdzie dzia³a³, warto zapoznaæ siê z XMLHttpRequest, a przy okazji poznaæ te¿ kilka dodatkowych informacji.
+
+#Nawi¹zujemy po³¹czenie
+Pierwsz¹ czynnoœci¹ jak¹ musimy wykonaæ to skonfigurowanie po³¹czenia za pomoc¹ metody open(typ, url, [async, login*, password*]).
+Metoda ta przyjmuje 3 atrybuty: typ po³¹czenia (get, post, put, patch, delete), adres do którego siê ³¹czymy, oraz trzeci okreœlaj¹cy czy nasze po³¹czenie ma byæ asynchroniczne czy synchroniczne. Dodatkowo mo¿emy tutaj podaæ login i has³o w przypadku Basic HTTP Authentication.
+
+Po wstêpnej konfiguracji wysy³amy nasze po³¹czenie za pomoc¹ metody send().
+
+const xhr = new XMLHttpRequest();
+
+//typ po³¹czenia, url, czy po³¹czenie asynchroniczne
+xhr.open("GET", "https://jsonplaceholder.typicode.com/posts"...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Metoda send() s³u¿y do wysy³ania po³¹czenia na serwer. Je¿eli w danym po³¹czeniu wysy³amy dane, musimy je podaæ jako atrybut tej metody. W przypadku gdy nie wysy³amy ¿adnych danych nie podajemy nic, a domyœlnie zostanie u¿yta wartoœæ null. Niektórzy programiœci wizualnie wstawiaj¹ tutaj null dla zabezpieczenia w przypadku starych przegl¹darek (1):
+
+//GET
+xhr.send(null);
+
+//POST
+xhr.send(formData);
+#Czekamy na odpowiedŸ
+Powy¿sze po³¹czenie za pomoc¹ 3 parametru ustawiliœmy na asynchroniczne. Po³¹czenie jest nawi¹zywane, skrypt wykonuje siê dalej, natomiast dzia³aæ na danych z serwera mo¿emy dopiero w momencie, gdy zostan¹ one nam zwrócone. Oznacza to, ¿e nie mo¿emy bezpoœrednio pod linijk¹ xhr.send() pobraæ wyniku naszego po³¹czenia.
+
+xhr.send()
+console.log(xhr.response); //brak danych
+Aby wykryæ moment kiedy dane po³¹czenie siê zakoñczy³o, musimy pod³¹czyæ do obiektu nas³uchiwanie odpowiedniego zdarzenia.
+
+Obiekt XMLHttpRequest udostêpnia nam kilka takich zdarzeñ. Trzy najwa¿niejsze to:
+
+load	Po³¹czenie zakoñczone powodzeniem
+error	B³¹d nawi¹zywania po³¹czenia (np. przerwa³o po³¹czenie)
+progress	Postêp wczytywania
+Mamy te¿ zdarzenia abort (anulowanie po³¹czenia), timoeout (przekroczony maksymalny czas po³¹czenia), loadstart/loadend (rozpoczêcie i zakoñczenie po³¹czenia - nie wa¿ne czy pozytywne) - ale nie s¹ one a¿ tak czêsto wykorzystywane.
+
+Ka¿de po³¹czenie mo¿e zakoñczyæ siê sukcesem (zosta³y pobrane dane) lub siê nie udaæ (np. internet przesta³ dzia³aæ). W tym pierwszym przypadku zadzia³a zdarzenie load, a w tym drugim zdarzenie error.
+
+Zdarzenie load oznacza tylko to, ¿e nasze po³¹czenie zakoñczy³o siê pozytywnie i dostaliœmy w odpowiedzi jakieœ dane. Zwrócone dane mog¹ zawieraæ odpowiedŸ której oczekiwaliœmy (np. dane o psach), ale te¿ odpowiedŸ ze strony jakiegoœ b³êdu (np. status 404, 500, czy 301 w przypadku przekierowania). Przed przyst¹pieniem do operowania na danych, dobr¹ manier¹ jest sprawdziæ, czy status naszego po³¹czenia wynosi 200 i czy mamy realne dane:
+
+const xhr = new XMLHttpRequest();
+
+xhr.addEventListener("load", function()...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Po pozytywnym zakoñczeniu po³¹czenia (load) mo¿emy skorzystaæ z jednej z trzech g³ównych w³aœciwoœci:
+
+response	zawiera w³aœciw¹ treœæ odpowiedzi
+status	zawiera status po³¹czenia. Status 200 oznacza pozytywne zwrócenie danych, 400 brak strony, 500 b³¹d serwera itp.
+statusText	zawiera status po³¹czenia w formie tekstowej. Dla 200 bêdzie to OK, dla 404 "Not Found", dla 403 "Forbidden" itp.
+Kliknij i sprawdŸ w konsoli
+
+W³aœciwoœæ response zawiera zwrócone dane. Domyœlnie s¹ one w formacie tekstowym. Takie dane mo¿emy konwertowaæ rêcznie za pomoc¹ odpowiednich metod:
+
+const xhr = new XMLHttpRequest();
+
+xhr.addEventListener("load",  function()...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Mo¿emy te¿ przed wykonaniem po³¹czenia ustawiæ typ danych jakich oczekujemy, dziêki czemu unikniemy rêcznej konwersji. S³u¿y do tego w³aœciwoœæ responseType, która przyjmuje wartoœci:
+
+""	(domyœlnie) zwraca dane w formacie string
+"text"	zwraca dane w formacie string
+"arraybuffer"	zwraca dane jako ArrayBuffer
+"blob"	zwraca dane jako Blob
+"document"	zwraca dane jako dokument XML
+"json"	zwraca dane jako JSON
+const xhr = new XMLHttpRequest();
+
+xhr.responseType = "json"
+
+xhr.addEventListener(...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Kliknij i sprawdŸ w konsoli
+
+#Wysy³anie danych
+W przypadku wysy³ania danych na serwer, podajemy je jako odpowiednio zakodowana wartoœæ dla funkcji send().
+
+xhr.addEventListener("load", function() {...});
+xhr.open(...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Dane mog¹ byæ wysy³ane w ró¿nych formatach i kodowaniu. Dla przyk³adu je¿eli wysy³amy formularz w HTML, dane s¹ wysy³ane w formacie zale¿nym od ustawionego atrybutu enctype tego formularza.
+
+<form action="..." method="post" enctype="multipart/form-data">
+</form>
+Dla takiego atrybutu mamy kilka mo¿liwoœci:
+
+application/x-www-form-urlencoded	domyœlny typ kodowania u¿ywany je¿eli nie u¿yjemy atrybutu enctype. Dane w tym przypadku s¹ kodowane do postaci adresu URL.
+multipart/form-data	multipart form. Ten typ u¿ywany jest w przypadku gdy chcemy wysy³aæ pliki, lub wiêksze iloœci danych
+text/plain	dane nie s¹ w ¿aden sposób kodowane. Nadaje siê tylko do debugowania
+Pierwszy typ kodowania wysy³a dane w postaci ci¹gu przypominaj¹cego URL. Wykorzystywany jest najczêœciej w przypadku przesy³ania danych tekstowych. Dane tutaj musz¹ byæ zakodowane do ci¹gu przypominaj¹cego query string (np. za pomoc¹ encodeURI()). Przyk³adowa postaæ wysy³anych danych mo¿e wygl¹daæ nastêpuj¹co:
+
+POST /test HTTP/1.1
+Host: foo.example
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 27
+
+field1=value1&field2=value2
+Drugi typ u¿ywany jest w przypadku wysy³ania danych bardziej z³o¿onych - np. du¿ych obiektów, czy plików, ale te¿ mo¿e byæ u¿yty przy wysy³aniu krótszych tekstów. Dane tutaj s¹ wysy³ane w postaci bloków (body part). Przyk³adowa postaæ:
+
+POST /test HTTP/1.1
+Host: foo.example
+Content-Type: multipart/form-data;boundary="boundary"
+
+--boundary
+Content-Disposition: form-data; name="field1"
+
+value1
+--boundary
+Content-Disposition: form-data; name="field2"; filename="example.txt"
+
+value2
+--boundary--
+Trzeciego typu nikt nie u¿ywa. Chyba, ¿e do debugowania po³¹czeñ...
+
+Zanim przejdziemy dalej, przejdŸ na chwilê na przygotowan¹ przeze mnie stronê i sprawdŸ dzia³anie formularzy. Zobaczy jak realnie wygl¹da przesy³anie takich danych.
+
+Powy¿sze nag³ówki u¿ywane s¹ w przypadku formularzy HTML. W przypadku po³¹czeñ realizowanych za pomoc¹ Javascript, mo¿emy ustawiaæ te¿ inne nag³ówki za pomoc¹ funkcji setRequestHeader().
+
+Przypuœæmy, ¿e podobny formularz jak na powy¿szej stronie chcielibyœmy wys³aæ za pomoc¹ XMLHttpRequest.
+
+<form action="./odbierz.php" method="post" class="form">
+    <label for="formAjaxName">Wpisz imiê</label>
+    <input type="text" required name="name" id="formAjaxName">
+
+    <label for="formAjaxSurname">Wpisz imiê</label>
+    <input type="text" required name="surname" id="formAjaxSurname">
+
+    <button type="submit" class="button">Wyœlij</button>
+</form>
+Mo¿emy to zrobiæ na kilka sposobów - zale¿nych od wybranej metody kodowania.
+
+Przy wysy³aniu danych domyœln¹ metod¹ powinniœmy wykonaæ 2 czynnoœci. Po pierwsze powinniœmy ustawiæ odpowiedni nag³ówek za pomoc¹ metody setRequestHeader(), a po drugie powinniœmy odpowiednio zakodowaæ i przekazaæ do funkcji send() nasze dane. Wa¿ne, ¿e obie czynnoœci musimy wykonaæ po skonfigurowaniu po³¹czenia za pomoc¹ open().
+
+const form = document.querySelector("form");
+const inputName = form.querySelector("input[name='name']")...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Podczas tworzenia po³¹czenia, niektóre nag³ówki s¹ zarz¹dzanie przez przegl¹darkê (np. Host). Nie jesteœmy w stanie ich ustawiæ za pomoc¹ powy¿szej funkcji. Dodatkowo po ustawieniu nag³ówków nie jesteœmy w stanie usun¹æ, a dodatkowo nag³ówków nie da siê nadpisaæ, poniewa¿ s¹ one dodawane:
+xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
+xhr.setRequestHeader("Content-type", "audio/mpeg; charset=utf-8");...?? To nie jest ca³y kod. Dowiedz siê czemu.
+dodaj¹ce siê nag³ówki
+Wpisz imiê
+Przyk³adowe imiê
+Wpisz imiê
+Przyk³adowe nazwisko
+Wyœlij
+Doœæ czêsto bêdziemy chcieli wysy³aæ dane w formacie JSON. Tyczy siê to sytuacji, gdy musimy na serwer przes³aæ bardziej z³o¿one obiekty, a dane nie mog¹ byæ tak "p³askie" jak na powy¿szym przyk³adzie. W takim przypadku znowu - musimy ustawiæ odpowiedni nag³ówek dla wysy³anej treœci oraz zakodowaæ nasz obiekt do odpowiedniej postaci za pomoc¹ JSON.stringify():
+
+const ob = {
+    name : "Piotrek",
+    age : 10,
+    pet : {
+        type ...?? To nie jest ca³y kod. Dowiedz siê czemu.
+#FormData
+W dzisiejszych czasach do dodawania danych dla wysy³ki mo¿emy te¿ skorzystaæ z interfejsu FormData().
+
+Interfejs ten dziêki zbudowanym metodom bardzo u³atwia zarz¹dzanie danymi jakie chcemy wys³aæ.
+
+append(key, value)	Dodaje now¹ wartoœæ o danym kluczu do wysy³anych zmiennych
+delete(key)	Usuwa wartoœæ o danym kluczu
+entries()	Zwraca iterator, który umo¿liwia zrobienie pêtli po wszystkich parach klucz/wartoœæ
+get(key)	Zwraca pierwsz¹ wartoœæ o danym kluczu
+getAll(key)	Zwraca tablicê wszystkich wartoœci o danym kluczu
+has(key)	Sprawdza czy w FormData istnieje wartoœæ o danym kluczu
+set(key)	Ustawia now¹ wartoœæ dla danego klucza
+keys()	Zwraca listê kluczy z danego FormData
+values()	Zwraca listê wartoœci z danego FormData
+Dziêki FormData bardzo prosto dodaje siê dane, które chcemy wys³aæ, a dodatkowo nie musimy ustawiaæ nag³ówka poniewa¿ dane zawsze s¹ tutaj wysy³ane za pomoc¹ kodowania multipart/form-data.
+
+const form = document.querySelector("form");
+const inputName = form.querySelector("input[name='name']")...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Plusem tego podejœcia jest to, ¿e w bardzo prosty sposób mo¿emy tutaj do³¹czaæ tak¿e pliki:
+
+const form = document.querySelector("form");
+const inputName = form.querySelector("input[name=name]")...?? To nie jest ca³y kod. Dowiedz siê czemu.
+#Postêp pobierania i wysy³ania danych
+Jedn¹ z cech odró¿niaj¹c¹ XMLHttpRequest od jego m³odszego brata - Fetch - jest to, ¿e w przypadku XMLHttpRequest mo¿emy reagowaæ na zmianê postêpu wysy³ania i pobierania danych.
+
+Obie czynnoœci s¹ do siebie bardzo podobne. Ró¿nic¹ jest to, ¿e w przypadku wysy³ania danych odwo³ujemy siê do w³aœciwoœci upload obiektu XMLHttpRequest, natomiast w przypadku œci¹gania danych odwo³ujemy siê bezpoœrednio do tego obiektu.
+
+Sprawdzanie postêpu przy wysy³aniu danych jest raczej proste, poniewa¿ przegl¹darka zna wielkoœæ wysy³anego pliku a i bez problemu mo¿e sprawdziæ, ile danych zosta³o wys³anych. Jedyn¹ rzecz¹, któr¹ musimy zrobiæ to pod³¹czyæ siê pod zdarzenie progress w³aœciwoœci upload. Dla zabezpieczenia czy rzeczywiœcie przegl¹darka ma dostêp do tych danych stosujemy w³aœciwoœæ lengthComputable:
+
+
+
+...
+xhr.upload.addEventListener("progress", function(e) {
+    if (...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Stosowny przyk³ad znajdziesz na tej stronie.
+
+W przypadku postêpu œci¹gania danych wykonujemy podobne dzia³anie jak powy¿ej. Tym razem w odwo³aniu pomijamy w³aœciwoœæ upload:
+
+...
+xhr.addEventListener("progress", function(e) {
+    if (e....?? To nie jest ca³y kod. Dowiedz siê czemu.
+Niestety takie wyliczenie œci¹ganych danych nie zawsze bêdzie mo¿liwe, poniewa¿ doœæ czêsto przegl¹darka nie wie dok³adnie ile danych zostanie wys³anych z serwera. ¯eby takie wyliczenie by³o mo¿liwe, serwer powinien zwróciæ nam d³ugoœæ odpowiedzi w nag³ówku Content-Length:
+
+content length
+Stosowny przyk³ad wrzuci³em znajdziesz na tej stronie.
+
+Dodatkowo œci¹gniête dane automatycznie nie pojawi¹ siê automatycznie na stronie, a i nie bêdziemy mogli za pomoc¹ javascriptu zapisaæ ich na dysk u¿ytkownika. Rozwi¹zaniem mo¿e tutaj byæ œci¹gniêcie danych pod postaci¹ "blob", a nastêpnie stworzenie na ich podstawie linku, który bêdzie otwiera³ dynamicznie stworzony plik.
+
+#Zdarzenie readystatechange
+W powy¿szych skryptach u¿ywaliœmy zdarzeñ load oraz error. Istnieje te¿ starsza metoda reakcji na aktualny stan po³¹czenia, która polega na skorzystaniu ze zdarzenia readystatechange. Omówimy j¹, poniewa¿ doœæ czêsto pojawia siê w innych tutorialach:
+
+const xhr = new XMLHttpRequest();
+
+xhr.addEventListener("readystatechange", function()...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Kliknij i sprawdŸ w konsoli
+
+Zdarzenie readystatechange odpalane jest dla ró¿nych stanów po³¹czenia. ¯eby sprawdziæ dany stan musimy sprawdziæ w³aœciwoœæ readyState, która mo¿e przyj¹æ nastêpuj¹ce wartoœci:
+
+Wartoœæ	Opis
+0	po³¹czenie nie nawi¹zane
+1	po³¹czenie nawi¹zane
+2	¿¹danie odebrane
+3	przetwarzanie
+4	dane zwrócone i gotowe do u¿ycia
+xhr.addEventListener("readystatechange", function() {
+    if (xhr.readyState ===...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Kliknij i sprawdŸ w konsoli
+
+W praktyce najczêœciej interesuje nas readyState równe 4.
+Dodatkowo by mieæ pewnoœæ, ¿e po³¹czenie zakoñczy³o siê powodzeniem, tak jak w poprzednich przyk³adach powinniœmy sprawdziæ status po³¹czenia:
+
+xhr.addEventListener("readystatechange", function() {
+    if (xhr.readyState ===...?? To nie jest ca³y kod. Dowiedz siê czemu.
+Wszelkie prawa zastrze¿one. Je¿eli chcesz u¿ywaæ jakiejœ czêœci tego kursu, skontaktuj siê z autorem. Aha - i ta strona korzysta z ciasteczek.
+
+Menu
+Napisz do mnie
+Ustawienia
+Kurs Javascript
+Szukaj
+Spis treœci
+Strona g³ówna
+S³owem wstêpu
+Podstawy
+Obiekty
+DOM
+Tematy ró¿ne
+Przechowywanie danych
+Data i czas
+Asynchronicznoœæ
+AJAX, REST, JSON
+Serwer lokalny i json-server
+XMLHttpRequest
+Callback i Promises
+Fetch API
+Async / Await
+Formularze
+jQuery
+Canvas
+Gry
+Dodatkowe
+Wesprzyj kurs ?? ?? ??
+Poznaj 6 niezbêdnych kroków do efektywnej nauki programowania

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel</title>
+    <script type="text/javascript" src="xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+
+</head>
+
+<body>
+    <input type="file" id="fileUpload" accept=".xls,.xlsx"> <br /><br />
+    <button type="button" id="uplaodExcel">Convert</button>
+    <pre id="jsonData"></pre>
+
+    <div id="board" style="width: 100vw; height: 80vh;">
+
+    </div>
+    <!-- <table id="gameboard">
+        <thead>
+            <tr>
+                <th colspan="2">The table header</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>The table body</td>
+                <td>with two columns</td>
+            </tr>
+        </tbody>
+    </table> -->
+
+    <script>
+        var selectedFile;
+        var dataFromExcel = [];
+
+        // // load image with size
+        // const input = document.querySelector('input#image_uploads');
+        // const preview = document.querySelector('.preview');
+
+        var myObj;
+
+        document
+            .getElementById('fileUpload')
+            .addEventListener('change', function (event) {
+                selectedFile = event.target.files[0];
+            });
+
+        document
+            .getElementById('uplaodExcel')
+            .addEventListener('click', excelToJson);
+
+        function createTableFromData() {
+            let divTable = document.getElementById('board');
+            let table = document.createElement('table');
+            let tableBody = document.createElement('tbody');
+
+            let tableData = dataFromExcel[0];
+
+            for (let i = 0; i < tableData.length; i++) {
+                var row = document.createElement("tr");
+
+                const dataObj = tableData[i];
+                // const {
+                //     Tytul,
+                //     Wydawca,
+                //     Wiek,
+                //     Min ilosc graczy,
+                //     Max ilosc graczy,
+                //     Ilosc gier,
+                //     Czas gry,
+                //     Opis,
+                //     Typ,
+                //     Wlasciciel,
+                //     Tagi,
+                //     Pliki graficzne
+                // } = dataObj;
+                
+                let idx = 0;
+                for (const data in dataObj) {
+                    if (dataObj.hasOwnProperty(data)) {
+                        const element = dataObj[data];
+                        // console.log(data + " " + element);
+                        var cell = document.createElement("td");
+                        var cellText = document.createTextNode(element);
+                        cell.appendChild(cellText);
+                        row.appendChild(cell);
+                    }
+                }
+                tableBody.appendChild(row);
+            }
+            table.appendChild(tableBody);
+            divTable.appendChild(table);
+            tableBody.setAttribute("border", "2");
+
+        };
+
+        function excelToJson() {
+            if (selectedFile) {
+                console.log('hi');
+                var fileReader = new FileReader();
+                fileReader.onload = function (event) {
+                    var data = event.target.result;
+                    var workbook = XLSX.read(data, {
+                        type: 'binary'
+                    });
+                    let i = 0;
+                    workbook.SheetNames.forEach(sheet => {
+                        let rowObject = XLSX.utils.sheet_to_row_object_array(
+                            workbook.Sheets[sheet]
+                        );
+                        let jsonObject = JSON.stringify(rowObject);
+                        document.getElementById('jsonData').innerHTML += jsonObject + '<br />';
+                        // console.log('1 ' + jsonObject);
+                        myObj = JSON.parse(jsonObject);
+                        dataFromExcel[i] = myObj;
+                        i++;
+
+
+                        // var xmlhttp = new XMLHttpRequest();
+                        // xmlhttp.onreadystatechange = function () {
+                        //     if (this.readyState == 4 && this.status == 200) {
+                        //         // console.log(this.responseText);
+                        //         // var myObj = JSON.parse(jsonObject);
+                        //         // document.getElementById("demo").innerHTML = myObj.name;
+                        //     }
+                        // };
+                        // xmlhttp.open("GET", "json_demo.txt", true);
+                        // xmlhttp.send();
+
+                    });
+                };
+                fileReader.readAsBinaryString(selectedFile);
+
+                setTimeout(() => {
+                    createTableFromData();
+                }, 1000);
+
+            }
+
+
+        }
+    </script>
+</body>
+
+</html>
