@@ -1,17 +1,37 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-body{
+body {
     background-color: lightgrey;
 }
 
 
-div#board table tbody tr td{
-border: 1px solid black;
+div#board table{
+font-size: 16px;
+border-collapse: collapse;
 }
 
-div#board table tbody tr td:nth-child(8){
+div#board table tbody tr td {
+    border: 1px solid black;
+    height: 3em;
+    text-align: center;
+}
+
+div#board table tbody tr:nth-child(even){
+    background-color: rgb(170, 170, 170);
+}
+
+
+div#board table tbody tr:hover {
+    background-color: rosybrown;
+}
+
+div#board table tbody tr td {
+    width: 100px;
+}
+
+div#board table tbody tr td:nth-child(8) {
     display: none;
 }
