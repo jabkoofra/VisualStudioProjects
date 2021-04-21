@@ -1,0 +1,8 @@
+serwer node.js 
+https://www.youtube.com/watch?v=Kw5tC5nQMRY&list=PLRqwX-V7Uu6YxDKpFzf_2D84p0cyk4T7X&index=11&ab_channel=TheCodingTrain
+
+uruchomienie serwera 
+node index.js
+
+uruchomienie z autoodśweirznaiem 
+nodemon index.js
