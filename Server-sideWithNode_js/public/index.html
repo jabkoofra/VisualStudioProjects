@@ -4,53 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script> -->
     <link rel="shortcut icon" href="#">
 
     <title>Document</title>
 </head>
 
 <body>
-    <script>
-        if ('geolocation' in navigator) {
-            console.log('geolocation available');
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                // console.log(lat)
-                // console.log(lon)
-                document.getElementById('latitude').textContent = lat;
-                document.getElementById('longitude').textContent = lon;
-
-
-                const data = {
-                    lat,
-                    lon
-                };
-
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                }
-                fetch('/api', options)
-                .then(response =>{
-                    console.log(response);
-                });
-
-            });
-
-        } else {
-            console.log(' geolocation IS NOT available ');
-        }
-    </script>
     <h1> Data App</h1>
+    <div><a href="/">enter</a> | <a href="/logs">list</a></div>| <a href="/uploadXLSX">uploadXLSX</a></div>| <a href="/showXLSX">showXLSX</a></div>
 
     <p> latitude: <span id="latitude"></span>&deg; </p>
     <p> longitude: <span id="longitude"></span>&deg; </p>
 
+    <label for="vegetable">enter your favorite vegetable</label>
+    <input id="vegetable" value="arugula" />
     <Button id='submit'>Submit</Button>
+
+    <script src='sketch.js'> 
+       
+    </script>
+      
 </body>
 
 </html>

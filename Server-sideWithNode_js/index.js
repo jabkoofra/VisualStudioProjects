@@ -25,7 +25,7 @@ app.get('/api', (request, response) => {
 
 app.post('/api', (request, response) => {
     console.log('I got request: ')
-    console.log(request.body);
+    // console.log(request.body);
 
     const data = request.body;
     const timestamp = Date.now();
