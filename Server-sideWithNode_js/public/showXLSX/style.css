@@ -7,3 +7,11 @@ td{
     border: 2px solid orangered ;
     border-radius: 20%;
 }
+
+.hide{
+    display: none;
+}
+
+.font_weight{
+    font-weight: bold;
+}

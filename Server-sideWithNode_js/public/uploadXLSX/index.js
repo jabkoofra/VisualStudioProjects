@@ -50,17 +50,27 @@ const subButton = document.getElementById('submit');
 subButton.addEventListener('click', submit, false);
 
 function submit() {
-    console.log("wysylamy");
     const input = document.getElementById('filexlsx');
+    const progressBar = document.getElementById("p");
 
     console.log(input.files[0].name);
 
     var oReq = new XMLHttpRequest();
     oReq.open("GET", input.files[0].name, true);
+
+    oReq.onprogress = function (pe) {
+        if (pe.lengthComputable) {
+            progressBar.max = pe.total
+            progressBar.value = pe.loaded
+        }
+    }
+    oReq.onloadend = function (pe) {
+        progressBar.value = pe.loaded
+    }
+
     oReq.responseType = "arraybuffer";
 
     oReq.onload = function (e) {
-        console.log("w onload");
         var arraybuffer = oReq.response;
         /* convert data to binary string */
         var data = new Uint8Array(arraybuffer);

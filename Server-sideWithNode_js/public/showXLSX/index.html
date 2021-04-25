@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.core.min.js"></script>
     <link href="style.css" rel="stylesheet" type="text/css">
     <title>Document</title>
 </head>
@@ -13,6 +12,19 @@
 <body>
     <h1>Data selfie App</h1>
     <div><a href="/">enter</a> | <a href="/logs">list</a></div>| <a href="/uploadXLSX">uploadXLSX</a></div>| <a href="/showXLSX">showXLSX</a></div>
+
+    <br>
+    <div>
+        <button id="submit">Submit</button>
+        <label for="p">File progress:</label>
+        <progress id="p" max="1000" value="0"> </progress>
+
+    </div>
+
+    <br>
+    <div id= search>
+        <input id= searchValue type="text" class="searchValue">
+    </div>
 
     <table>
         <thead id = 'headTable'>

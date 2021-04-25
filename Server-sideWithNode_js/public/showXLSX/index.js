@@ -1,155 +1,64 @@
-// /* set up XMLHttpRequest */
-// var url = "ostrowplansze_low.xlsx";
-// var oReq = new XMLHttpRequest();
-
-// oReq.open("GET", url, true);
-// oReq.responseType = "arraybuffer";
-
-function cleanRow(object) {
-
-    for (let idx = 0; idx < object.childElementCount; idx++) {
-
-        // if (object.deleteRow(idx) === TypeError) {
-        //     console.log("deleteCell")
-
-        //     object.deleteCell(idx);
-
-        // } else if (object.deleteCell(idx)=== TypeError) {
-        //     console.log("deleteRow")
-
-        object.deleteRow(idx)
-
-        // } else {
-        //     console.log("coś innego")
-        // }
-
-    }
-}
-
-// oReq.onload = function (e) {
-//     var arraybuffer = oReq.response;
-
-//     /* convert data to binary string */
-//     var data = new Uint8Array(arraybuffer);
-//     var arr = new Array();
-//     for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-//     var bstr = arr.join("");
-
-//     /* Call XLSX */
-//     var workbook = XLSX.read(bstr, {
-//         type: "binary"
-//     });
-
-//     /* DO SOMETHING WITH workbook HERE */
-//     const sheetNames = workbook.SheetNames;
-//     // console.log(workbook);
-
-//     //   let  XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetNames[0]]);
-//     let jsonSheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]);
-//     // console.log(jsonSheet);
-
-//     /* Pobranie nagłówkow do tablicy */
-//     var headersName = [];
-//     for (var i in jsonSheet[0]) {
-//         headersName.push(i);
-//     }
-//     var headersNametoClass = []
-//     headersName.forEach(name => {
-//         const n = name.replaceAll(' ', '');
-//         headersNametoClass.push(n);
-//     })
-
-//     /* Ustawienei nagłówkow w tablicy */
-//     const tHeadElem = document.getElementById('headTable');
-//     const daneGiertbody = document.getElementById('daneGier');
-
-//     cleanRow(tHeadElem);
-//     cleanRow(daneGiertbody);
-
-//     // for (let idx = 0; idx < headTR.childElementCount; idx++) {
-//     //     headTR.deleteCell(idx)
-//     // }
-//     // for (let idx = 0; idx < daneGiertbody.childElementCount; idx++) {
-//     //     daneGiertbody.deleteRow(idx)
-//     // }
-
-//     const trHead = document.createElement('tr');
-//     for (let idx = 0; idx < headersName.length; idx++) {
-//         console.log(headersName)
-//         const th = document.createElement('th')
-//         th.className = headersNametoClass[idx];
-//         // th.textContent = item;
-//         th.innerText = headersName[idx];
-//         trHead.append(th);
-//     }
-//     tHeadElem.append(trHead);
+// const time = 1000;
+// const i = time/100;
+// let timeCount = 0;
+// const progressBar = document.getElementById("p");
+// progressBar.max = time;
 
 
-//     for (fullData of jsonSheet) {
-//         const tr = document.createElement('tr');
-//         for (var i = 0; i < headersName.length; i++) {
-//             const td = document.createElement('td');
-//             if (fullData[headersName[i]]) {
-//                 td.innerText = fullData[headersName[i]];
-//             } else {
-//                 td.innerText = 'b/d'
-//             }
-//             td.className = headersNametoClass[i];
-//             tr.appendChild(td);
-//         }
-//         daneGiertbody.appendChild(tr);
+// setTimeout(() => {
+//     const intervalID = setInterval(() => {
+//         progressBar.value = timeCount;
+//         // if (timeCount == time)
+//             console.log(timeCount);
+//         timeCount += i;
+//     }, i);
 
-//     }
+//     setTimeout(() => {
+//         getData();
+//     }, time);
 
-//     // console.log(headersName);
-//     // console.log(headersName[4]);
-//     // console.log(jsonSheet[0][headersName[4]]);
+// }, 100);
+
+
+setTimeout(() => {
+    getData();
+    loadSearch()
+}, 100);
 
 
 
-// }
-
-// oReq.send();
-
-getData();
-async function getData(){
+async function getData() {
     const response = await fetch('/xlsx');
-    const data = await response.json();
-    console.log(data);
-
-    let jsonSheet = data;
+    const jsonSheet = await response.json();
     console.log(jsonSheet);
 
     /* Pobranie nagłówkow do tablicy */
-    var headersName = [];
-    for (var i in jsonSheet[0]) {
-        headersName.push(i);
-    }
-    var headersNametoClass = []
-    headersName.forEach(name => {
-        const n = name.replaceAll(' ', '');
-        headersNametoClass.push(n);
-    })
+    const headersName = headersNameF(jsonSheet, 0);
 
+    /* Usuwanie spacji z nagłówkow do tablicy aby pozniej stworzyc
+     z nich klasy do tablicy*/
+    const headersNametoClass = headersNametoClassF(headersName);
+
+    /* pobranie info o tablicy */
     const tHeadElem = document.getElementById('headTable');
     const daneGiertbody = document.getElementById('daneGier');
-
+    /* wyczyszczenie starej tablicy*/
     cleanRow(tHeadElem);
     cleanRow(daneGiertbody);
-
+    /*  tworzenie nagłówka tablicy */
     const trHead = document.createElement('tr');
     for (let idx = 0; idx < headersName.length; idx++) {
-        console.log(headersName)
+        // console.log(headersName)
         const th = document.createElement('th')
         th.className = headersNametoClass[idx];
-        // th.textContent = item;
         th.innerText = headersName[idx];
+        // th.textContent =  headersName[idx]; // to samo co wyzej
         trHead.append(th);
     }
-    tHeadElem.append(trHead);
+    tHeadElem.append(trHead); // 
 
-
-    for (fullData of jsonSheet) {
+    /* stworzenie uzupełnionej tablicy */
+    for (const fullData of jsonSheet) {
         const tr = document.createElement('tr');
         for (var i = 0; i < headersName.length; i++) {
             const td = document.createElement('td');
@@ -163,4 +72,135 @@ async function getData(){
         }
         daneGiertbody.appendChild(tr);
     }
+}
+
+
+function headersNametoClassF(headersName) {
+    let headersNametoClass = [];
+    headersName.forEach(name => {
+        const n = name.replaceAll(' ', '');
+        headersNametoClass.push(n);
+    })
+    return headersNametoClass;
+}
+
+function headersNameF(jsonSheet, sheetIdx) {
+    let hs = [];
+    for (var i in jsonSheet[sheetIdx]) {
+        hs.push(i);
+        // for..in do wyświetalnia wszystkiego w obiekcie
+/** const object = { a: 1, b: 2, c: 3 };
+for (const property in object) {
+  console.log(`${property}: ${object[property]}`);
+}
+ */
+
+    }
+    return hs;
+}
+/* */
+function cleanRow(object) {
+
+    for (let idx = 0; idx < object.childElementCount; idx++) {
+
+
+        object.deleteRow(idx)
+
+    }
+}
+
+function loadSearch() {
+
+    const search = document.getElementById('searchValue');
+    search.addEventListener('input', (e) => {
+        // console.log(e);
+        // console.log(search.value);
+        const firstTR = document.getElementById('daneGier').children[0];
+
+        if (search.value.length == 0) {
+            showAllTR(firstTR);
+        } else {
+            checkTrClassName(firstTR, search.value)
+        }
+    }, false);
+}
+
+
+
+function checkTrClassName(TR, searchValue) {
+    if (TR !== null) {
+        const trClassList = TR.classList;
+
+        // if (trClassList.length == 0) {
+        //     searchImputValue(TR, searchValue);
+        // } else {
+        //     let hide = false;
+        //     trClassList.forEach(className => {
+        //         if (className == "hide") {
+        //             hide = true;
+        //         }
+        //     })
+        //     if (!hide) {
+        searchImputValue(TR, searchValue);
+        //     }
+        // }
+        checkTrClassName(TR.nextSibling, searchValue)
+    }
+}
+
+
+function searchImputValue(TR, searchValue) {
+
+    const regexpAll = new RegExp(`(${searchValue})`, 'gi');
+    const matchAll = TR.firstChild.innerText.match(regexpAll);
+    let hide = false;
+
+    if (matchAll == null) {
+        for (let i = 0; i < searchValue.length; i++) {
+            const regexpSingle = new RegExp(`[${searchValue[i]}]`, 'gi');
+            const matchSingle = TR.firstChild.innerText.match(regexpSingle);
+            if (matchSingle == null) {
+                hide = true;
+            }
+        }
+    } else {
+        if (searchValue.length > 2) {
+            fontWeightAdd(TR);
+        } else {
+            fontWeightRemove(TR);
+        }
+    }
+
+    if (hide) {
+        hideTR(TR)
+    } else {
+        showTR(TR);
+    }
+}
+
+function hideTR(TR) {
+    // TR.classList.toggle("hide");
+    TR.classList.add("hide");
+}
+
+function showTR(TR) {
+    // TR.classList.toggle("hide");
+    TR.classList.remove("hide");
+}
+
+function showAllTR(firstTR) {
+    if (firstTR !== null) {
+        showTR(firstTR);
+        showAllTR(firstTR.nextSibling);
+    }
+}
+
+function fontWeightAdd(TR) {
+    // TR.classList.toggle("hide");
+    TR.classList.add("font_weight");
+}
+
+function fontWeightRemove(TR) {
+    // TR.classList.toggle("hide");
+    TR.classList.remove("font_weight");
 }
