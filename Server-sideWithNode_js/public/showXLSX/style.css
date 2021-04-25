@@ -1,0 +1,9 @@
+
+.Opis{
+    display: none;
+}
+
+td{
+    border: 2px solid orangered ;
+    border-radius: 20%;
+}

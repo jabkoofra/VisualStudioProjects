@@ -6,18 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.core.min.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css">
     <title>Document</title>
 </head>
 
 <body>
     <h1>Data selfie App</h1>
-    <div><a href="/">enter</a> | <a href="/logs">list</a></div>| <a href="/uploadXLSX">uploadXLSX</a></div>| <a href="/showXLSX">showXLSX</a></div>
+    <div><a href="/">enter</a> | <a href="/logs">list</a></div>| <a href="/uploadXLSX">uploadXLSX</a></div>| <a
+        href="/showXLSX">showXLSX</a></div>
 
+    <br>
 
+    <input type="file" id="filexlsx" accept=".xls,.xlsx">
 
+    <div id="drop-area">
+        <form class="my-form">
+            <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
+            <input type="file" id="fileElem"  accept=".xls, .xlsx" onchange="handleFiles(this.files)">
+            <label class="button" for="fileElem">Select some files</label>
+        </form>
+    </div>
+
+    <div>
+        <button id="submit">Submit</button>
+    </div>
 
     <script src="index.js">
-      
+
     </script>
 </body>
 
