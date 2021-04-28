@@ -89,24 +89,22 @@ function headersNameF(jsonSheet, sheetIdx) {
     for (var i in jsonSheet[sheetIdx]) {
         hs.push(i);
         // for..in do wyświetalnia wszystkiego w obiekcie
-/** const object = { a: 1, b: 2, c: 3 };
-for (const property in object) {
-  console.log(`${property}: ${object[property]}`);
-}
- */
+        /** const object = { a: 1, b: 2, c: 3 };
+        for (const property in object) {
+          console.log(`${property}: ${object[property]}`);
+        }
+         */
 
     }
     return hs;
 }
 /* */
 function cleanRow(object) {
+const idxMax = object.childElementCount;
+while (object.childElementCount) {
+    object.deleteRow(0)
+}
 
-    for (let idx = 0; idx < object.childElementCount; idx++) {
-
-
-        object.deleteRow(idx)
-
-    }
 }
 
 function loadSearch() {

@@ -11,7 +11,8 @@
 
 <body>
     <h1>Data selfie App</h1>
-    <div><a href="/">enter</a> | <a href="/logs">list</a></div>| <a href="/uploadXLSX">uploadXLSX</a></div>| <a href="/showXLSX">showXLSX</a></div>
+    <div><a href="/">enter</a> | <a href="/logs">list</a></div>| <a href="/uploadXLSX">uploadXLSX</a></div>| <a
+        href="/showXLSX">showXLSX</a></div>
 
     <br>
     <div>
@@ -22,23 +23,55 @@
     </div>
 
     <br>
-    <div id= search>
-        <input id= searchValue type="text" class="searchValue">
-    </div>
 
+    <div>
+        <input id=searchValue type="text" class="searchValue" value="nazwa">
+        <div id='inputMenu' class="inputMenu">
+            <div>
+                <input type="checkbox" id="scales" name="scales" checked>
+                <label for="scales">Scales</label>
+            </div>
+            <div>
+                <input type="checkbox" id="horns" name="horns">
+                <label for="horns">Horns</label>
+            </div>
+        </div>
+    </div>
     <table>
-        <thead id = 'headTable'>
-            <tr >
+        <thead id='headTable'>
+            <tr>
                 <th> Test1 </th>
+                <th> Test2 </th>
+                <th> Test3 </th>
+                <th> Test4 </th>
             </tr>
         </thead>
 
 
-        <tbody id = 'daneGier'>
+        <tbody id='daneGier'>
             <tr>
-                <td>
-                    Test1
-                </td>
+                <td>Test11</td>
+                <td>Test12</td>
+                <td>Test13</td>
+                <td>Test14</td>
+            </tr>
+            <tr>
+                <td>Test21</td>
+                <td>Test22</td>
+                <td>Test23</td>
+                <td>Test22</td>
+            </tr>
+            <tr>
+                <td>Test31</td>
+                <td>Test32</td>
+                <td>Test33</td>
+                <td>Test34</td>
+            </tr>
+            <tr>
+                <td>Test41</td>
+                <td>Test42</td>
+                <td>Test43</td>
+                <td>Test4</td>
             </tr>
         </tbody>
 
@@ -48,7 +81,7 @@
 
 
     <script src="index.js">
-      
+
     </script>
 </body>
 
